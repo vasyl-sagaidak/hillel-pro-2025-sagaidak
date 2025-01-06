@@ -2,7 +2,7 @@ package lesson_05;
 
 public class CalcCostDelivery extends CalcCostBase {
 
-    private final static double deliveryPrice = 7.0;
+    private final static double deliveryPrice = Constants.DELIVERY_PRICE;
 
     @Override
     public double calcCost(Product product) {
