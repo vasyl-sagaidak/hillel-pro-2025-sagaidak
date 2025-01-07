@@ -1,4 +1,4 @@
-package lesson_05;
+package lesson_05.hometask;
 
 public class Main {
     public static void main(String[] args) {
