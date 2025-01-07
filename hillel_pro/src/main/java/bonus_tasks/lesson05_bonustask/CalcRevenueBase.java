@@ -1,4 +1,4 @@
-package lesson_05.bonustask;
+package bonus_tasks.lesson05_bonustask;
 
 // Клас розрахунку базового доходу
 public class CalcRevenueBase {

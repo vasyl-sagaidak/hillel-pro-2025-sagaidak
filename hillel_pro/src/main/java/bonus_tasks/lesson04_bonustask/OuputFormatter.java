@@ -1,4 +1,4 @@
-package lesson_04.buyer_info;
+package bonus_tasks.lesson04_bonustask;
 
 public class OuputFormatter {
     public String getOutputData(Buyer buyer) {

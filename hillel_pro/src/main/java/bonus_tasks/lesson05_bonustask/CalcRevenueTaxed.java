@@ -1,4 +1,4 @@
-package lesson_05.bonustask;
+package bonus_tasks.lesson05_bonustask;
 
 // Клас розрахунку доходу, враховуючи податок на дохід.
 // Цей клас має успадковувати клас CalcRevenueBase.

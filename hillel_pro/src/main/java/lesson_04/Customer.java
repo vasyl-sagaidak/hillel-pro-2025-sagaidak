@@ -1,4 +1,4 @@
-package lesson_04.app;
+package lesson_04;
 
 public class Customer {
     private final String name;

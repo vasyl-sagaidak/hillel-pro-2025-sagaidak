@@ -1,14 +1,19 @@
-package lesson_05.bonustask;
+package lesson_05;
 
-// Клас-модель продажу
-public class Sale {
+public class Product {
 
+    String name;
     int quota;
     double price;
 
-    public Sale(int quota, double price) {
+    public Product(String name, int quota, double price) {
+        this.name = name;
         this.quota = quota;
         this.price = price;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getQuota() {
@@ -21,8 +26,8 @@ public class Sale {
 
     @Override
     public String toString() {
-        return "Sale: " +
-                "quota is " + quota + " " +
+        return "Product: " + name +
+                ", quota is " + quota + " " +
                 Constants.MEASURE +
                 ", price is " + Constants.CURRENCY +
                 " " + price + ".";

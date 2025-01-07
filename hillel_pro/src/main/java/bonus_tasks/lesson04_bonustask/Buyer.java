@@ -1,4 +1,4 @@
-package lesson_04.buyer_info;
+package bonus_tasks.lesson04_bonustask;
 
 public class Buyer {
     private String name;

@@ -1,4 +1,4 @@
-package lesson_05.hometask;
+package lesson_05;
 
 public class CalcCostDelivery extends CalcCostBase {
 
