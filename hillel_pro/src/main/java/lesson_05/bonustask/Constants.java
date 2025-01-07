@@ -1,4 +1,4 @@
-package bonus_tasks.lesson05_bonustask;
+package lesson_05.bonustask;
 
 public class Constants {
     public static final String CURRENCY = "EUR";

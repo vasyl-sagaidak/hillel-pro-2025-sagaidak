@@ -1,4 +1,4 @@
-package lesson_05;
+package lesson_05.homework;
 
 public class CalcCostBase {
 

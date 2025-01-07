@@ -1,4 +1,4 @@
-package bonus_tasks.lesson04_bonustask;
+package lesson_04.bonustask;
 
 public class Main {
     public static void main(String[] args) {
