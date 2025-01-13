@@ -8,7 +8,7 @@ public class Gen<T> {
         this.o = o;
     }
 
-    T getOb() {
+    public T getOb() {
         return o;
     }
 
