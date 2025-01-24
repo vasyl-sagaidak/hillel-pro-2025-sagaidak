@@ -1,0 +1,46 @@
+Классы для работы с датой и временем:
+
+    Date();
+    LocalDate(); - класс показывающий дату
+    LocalTime(); - класс для работы со временем
+    LocalDateTime();
+    ChronoUnit();
+    DateTimeFormatter() - класс форматирующий стринг в дату.
+
+Методы класса Date():
+    toString() - возвращает текущую дату.
+    getTime() - возвращает количество миллисекунд, истекших с 1 января 1970 года.
+    equals() - сравнивает две даты.
+    after() - определяет была ли первая дата позже второй.
+    before() - определяет была ли первая дата раньше второй.
+
+Методы класса LocalDate():
+    now() - возвращает текущую дату
+    of() - устанавливает дату
+    getYear() - возвращает год
+    getMonthValue() - возвращает месяц
+    getDayOfMonth() - возвращает день месяца
+    getDayOfWeek() - возвращает день недели
+    plusDays() - добавляет к дате некоторое кол-во дней
+    plusWeeks() - добавляет к дате некоторое кол-во недель
+    minusMonths() - отнимает от даты некоторое кол-во месяцев
+    minusYears() - отнимает от даты некоторое кол-во лет
+
+Класс ChronoUnit():
+Позволяет посчитать сколько времени прошло между датами А и Б.
+
+СhronoUnit.MONTHS.between(dateA, dateB) // вернет сколько месяцев прошло между двумя обьектами LocalDate
+ChronoUnit.HOURS.between(wakeUpTime, dinnerTime) //вернет сколько месяцев прошло между обьектами LocalTime
+
+Пример DateTimeFormatter:
+
+DateTimeFormatter formatter =DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String date = "31.12.1987";
+        LocalDate date1 = LocalDate.parse(date, formatter);
+        System.out.println(date1);
+        LocalDate date2 = LocalDate.now();
+        System.out.println(date2);
+
+        Вывод:
+        1987-12-31
+        2025-01-23
