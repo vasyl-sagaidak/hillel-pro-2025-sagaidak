@@ -1,0 +1,3 @@
+Welcome to Hillel Java Pro Course by Mykola Tsyb
+Java IO Streams lesson
+We invoke method .newLine() to have each write session in separate line

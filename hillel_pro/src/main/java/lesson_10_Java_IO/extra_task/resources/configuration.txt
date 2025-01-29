@@ -1,0 +1,4 @@
+FILE:src\main\java\lesson_10_Java_IO\extra_task\resources\configuration.txt
+LEVEL:DEBUG
+MAX-SIZE:10000
+FORMAT:.txt
