@@ -13,7 +13,7 @@ public class FileHandler {
         }
         return stringBuilder.toString();
         }  catch (IOException e) {
-            return e.getMessage();
+            throw new RuntimeException("Can't read from file.", e);
         }
     }
 }

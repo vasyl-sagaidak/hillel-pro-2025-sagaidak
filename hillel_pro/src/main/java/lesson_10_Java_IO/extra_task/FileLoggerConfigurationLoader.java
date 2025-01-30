@@ -9,12 +9,12 @@ public class FileLoggerConfigurationLoader {
     private String resourceFilePath;
     private String logLevel;
     private Long maxSize;
-    private String format;
+    private String fileFormat;
 
     public FileLoggerConfiguration load(File file) {
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
              String[] lines = line.split(":");
                 switch (lines[0]) {
                     case "FILE":
@@ -27,13 +27,13 @@ public class FileLoggerConfigurationLoader {
                         maxSize = Long.valueOf(lines[1]);
                         break;
                     case "FORMAT":
-                        format = lines[1];
+                        fileFormat = lines[1];
                         break;
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException("Can not read from file", e);
         }
-        return new FileLoggerConfiguration(resourceFilePath, logLevel, maxSize, format);
+        return new FileLoggerConfiguration(resourceFilePath, logLevel, maxSize, fileFormat);
     }
 }
