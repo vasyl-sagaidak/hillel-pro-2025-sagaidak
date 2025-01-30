@@ -6,9 +6,9 @@ public class FileLoggerConfiguration {
     private final Long fileMaxSize;
     private final String recordFormat;
 
-    public FileLoggerConfiguration(String sourceFilePath, String currentLogLevel,
+    public FileLoggerConfiguration(String sourceConfigFilePath, String currentLogLevel,
                                    Long fileMaxSize, String recordFormat) {
-        this.sourceConfigFilePath = sourceFilePath;
+        this.sourceConfigFilePath = sourceConfigFilePath;
         this.currentLogLevel = currentLogLevel;
         this.fileMaxSize = fileMaxSize;
         this.recordFormat = recordFormat;

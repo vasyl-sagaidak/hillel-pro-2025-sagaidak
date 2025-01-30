@@ -9,14 +9,14 @@ public class LoggerTestRunner {
 
     public static void main(String[] args) {
         File configFile = new File(RES_PATH + "configuration.txt");
-        FileLoggerConfigurationLoader flcl = new FileLoggerConfigurationLoader();
-        FileLogger fl = new FileLogger(flcl.load(configFile));
+        FileLoggerConfigurationLoader fileLoggerConfigurationLoader = new FileLoggerConfigurationLoader();
+        FileLogger fileLogger = new FileLogger(fileLoggerConfigurationLoader.load(configFile));
         try {
             for (int i = 0; i < 100; i++) {
                 if (i % 2 != 0) {
-                    fl.debug("This is DEBUG line in the log file.");
+                    fileLogger.debug("This is DEBUG line in the log file.");
                 }
-                fl.info("This is information line in the log file.");
+                fileLogger.info("This is information line in the log file.");
             }
         } catch (FileMaxSizeReachedException e) {
             throw new RuntimeException("You've reached max size of the file", e);
