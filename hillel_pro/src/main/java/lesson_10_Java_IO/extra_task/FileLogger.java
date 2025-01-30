@@ -22,43 +22,43 @@ public class FileLogger {
                         + fileLoggerConfiguration.getRecordFormat()));
     }
 
-    public void debug(String message) throws FileMaxSizeReachedException  {
+    public void debug(String message) {
         if (isDebugLogLevel(fileLoggerConfiguration)) {
-            if (ifHasFreeSpace(file, fileLoggerConfiguration)) {
-                try (BufferedWriter bufferedWriter =
-                             new BufferedWriter(new FileWriter(file, true))) {
-                    bufferedWriter.newLine();
-                    bufferedWriter.write("["+ LocalDateTime.now() +"] "
-                            +"["+LoggingLevel.DEBUG.name()+"] "
-                            + "Повідомлення: ["+message+"]");
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException("File not found", e);
-                } catch (IOException e) {
-                    throw new RuntimeException("Can't write into file", e);
-                }
-            } else {
-                throw new FileMaxSizeReachedException("File max size: "
-                        + fileLoggerConfiguration.getFileMaxSize()
-                        +"\nFile current size: " + file.length()
-                        +"\nFilePath: " + file.getAbsolutePath());
+            try {
+                writeByLoggingLevel(message,LoggingLevel.DEBUG.name());
+            } catch (FileMaxSizeReachedException e) {
+                throw new RuntimeException("You've reached max size of the file", e);
             }
         }
     }
 
-    public void info(String message) throws FileMaxSizeReachedException {
+    public void info(String message) {
+        try {
+            writeByLoggingLevel(message, LoggingLevel.INFO.name());
+        } catch (FileMaxSizeReachedException e) {
+            throw new RuntimeException("You've reached max size of the file", e);
+        }
+    }
+
+    private void writeByLoggingLevel(String message, String loggingLevel)
+            throws FileMaxSizeReachedException {
         if (ifHasFreeSpace(file, fileLoggerConfiguration)) {
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true))) {
-                bufferedWriter.write("\n["+ LocalDateTime.now() +"] "
-                        +"["+LoggingLevel.INFO.name()+"] "
-                        + "Повідомлення: ["+message+"]");
+            try (BufferedWriter bufferedWriter =
+                         new BufferedWriter(new FileWriter(file, true))) {
+                bufferedWriter.newLine();
+                bufferedWriter.write("[" + LocalDateTime.now() + "] "
+                        + "[" + loggingLevel + "] "
+                        + "Повідомлення: [" + message + "]");
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("File not found", e);
             } catch (IOException e) {
                 throw new RuntimeException("Can't write into file", e);
             }
         } else {
             throw new FileMaxSizeReachedException("File max size: "
-                    + fileLoggerConfiguration.getFileMaxSize()
-                    +"; File current size: " + file.length()
-                    +"\nFilePath: " + file.getAbsolutePath());
+                        + fileLoggerConfiguration.getFileMaxSize()
+                        + "\nFile current size: " + file.length()
+                        + "\nFilePath: " + file.getAbsolutePath());
         }
     }
 
