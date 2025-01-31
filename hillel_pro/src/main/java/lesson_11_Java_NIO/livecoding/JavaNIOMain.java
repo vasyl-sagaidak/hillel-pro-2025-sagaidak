@@ -1,4 +1,4 @@
-package lesson_11_Java_NIO;
+package lesson_11_Java_NIO.livecoding;
 
 import java.io.IOException;
 import java.nio.file.Files;
