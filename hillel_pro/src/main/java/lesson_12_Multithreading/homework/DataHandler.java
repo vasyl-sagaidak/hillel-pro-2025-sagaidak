@@ -2,8 +2,6 @@ package lesson_12_Multithreading.homework;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.lang.Thread.currentThread;
-
 public class DataHandler {
     String[] fruits = new DataRepository().getData();
 
@@ -16,7 +14,7 @@ public class DataHandler {
                 sb.append(String.format("(%d) %s ",
                         count.getAndIncrement(), fruit));
             }
-            System.out.println(currentThread().getName() + ": " + sb);
+            System.out.println(Thread.currentThread().getName() + ": " + sb);
         }
     }
 }
