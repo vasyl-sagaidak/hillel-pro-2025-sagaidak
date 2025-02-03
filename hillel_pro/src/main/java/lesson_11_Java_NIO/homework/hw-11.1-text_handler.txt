@@ -1,0 +1,8 @@
+За допомогою можливостей File NIO API необхідно
+створити файл та прочитати його.
+
+Результат виведення має бути:
+
+Created files\\myfile.txt
+Recorded in files\\myfile.txt
+CONTENT: Super information.
