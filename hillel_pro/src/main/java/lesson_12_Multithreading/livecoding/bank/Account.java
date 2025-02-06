@@ -1,5 +1,6 @@
 package lesson_12_Multithreading.livecoding.bank;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -8,6 +9,7 @@ public class Account {
     private ReentrantLock lock = new ReentrantLock();
     private int balance;
     private int id;
+    private AtomicInteger failCounter = new AtomicInteger();
 
     public Account(int balance, int id) {
         this.balance = balance;
@@ -23,6 +25,10 @@ public class Account {
     public void deposit(int amount) {
         System.out.println("deposit");
         balance += amount;
+    }
+
+    public AtomicInteger getFailCounter() {
+        return failCounter;
     }
 
     public int getBalance() {

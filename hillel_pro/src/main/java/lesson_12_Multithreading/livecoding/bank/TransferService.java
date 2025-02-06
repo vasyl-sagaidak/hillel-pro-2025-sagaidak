@@ -23,6 +23,7 @@ public class TransferService {
                         System.out.println("Money transfer was successfully");
                     } else {
                         System.out.println("Can't get a lock from " + account2);
+                        account2.getFailCounter().addAndGet(1);
                     }
                 } finally {
                     if (account2.getLock().isHeldByCurrentThread()) {
@@ -30,6 +31,7 @@ public class TransferService {
                     }
                 }
             } else {
+                account1.getFailCounter().addAndGet(1);
                 System.out.println("Can't get a lock from " + account1);
             }
         } finally {
