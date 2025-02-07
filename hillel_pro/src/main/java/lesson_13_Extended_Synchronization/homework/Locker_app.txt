@@ -1,0 +1,13 @@
+В проекті має бути реалізовано функціонал модифікації
+чисел за допомогою об’єкта блокування.
+
+Виведення має бути таким:
+
+Initial value is 7
+New value is 21
+Initial value is 4
+New value is 12
+Initial value is 5
+New value is 15
+Initial value is 2
+New value is 6
