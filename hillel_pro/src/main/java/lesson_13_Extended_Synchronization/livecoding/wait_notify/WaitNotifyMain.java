@@ -1,4 +1,4 @@
-package lesson_13_Extended_Synchronization.wait_notify;
+package lesson_13_Extended_Synchronization.livecoding.wait_notify;
 
 public class WaitNotifyMain {
     public static void main(String[] args) {

@@ -8,8 +8,8 @@ public class Account {
 
     private ReentrantLock lock = new ReentrantLock();
     private int balance;
-    private int id;
-    private AtomicInteger failCounter = new AtomicInteger();
+    private final int id;
+    private final AtomicInteger failCounter = new AtomicInteger();
 
     public Account(int balance, int id) {
         this.balance = balance;
@@ -20,7 +20,6 @@ public class Account {
         System.out.println("withdraw");
         balance -= amount;
     }
-
 
     public void deposit(int amount) {
         System.out.println("deposit");
