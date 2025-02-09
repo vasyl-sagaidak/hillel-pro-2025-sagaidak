@@ -9,17 +9,17 @@ public class ExecutorServiceMain {
 
     public static void main(String[] args) {
         ExecutorServiceMain main = new ExecutorServiceMain();
-        try (ExecutorService executorService = main.generationExecutor(10)) {
-
-            for (int i = 0; i < 150; i++) {
-              Future<?> future =  executorService.submit(() -> System.out.println("test"));
-              future.get();
-            }
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try (ExecutorService executorService = main.generationExecutor(10)) {
+//
+//            for (int i = 0; i < 150; i++) {
+//              Future<?> future =  executorService.submit(() -> System.out.println("test"));
+//              future.get();
+//            }
+//        } catch (ExecutionException e) {
+//            throw new RuntimeException(e);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public ExecutorService generationExecutor(int threads) {
