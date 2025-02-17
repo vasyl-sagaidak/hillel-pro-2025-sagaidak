@@ -1,0 +1,76 @@
+Урок 15 (ЧЕТВЕРГ - 13.02.2025)
+Тема: ИНТЕРФЕЙС MAP И ЕГО РЕАЛИЗАЦИИ
+======================================================================================================
+Ключевые разделы:
+
+1) СТРУКТУРА ДАННЫХ "СЛОВАРЬ"
+2) БАЗОВЫЕ РЕАЛИЗАЦИИ ИНТЕРФЕЙСА MAP
+3) КЛАСС HASH-MAP
+4) КЛАСС LINKED-HASH-MAP
+5) КЛАСС TREE-MAP
+6) ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ
+
+======================================================================================================
+1) СТРУКТУРА ДАННЫХ "СЛОВАРЬ"
+
+*
+======================================================================================================
+2) БАЗОВЫЕ РЕАЛИЗАЦИИ ИНТЕРФЕЙСА MAP
+
+*
+======================================================================================================
+3) КЛАСС HASH-MAP
+
+*
+======================================================================================================
+4) КЛАСС LINKED-HASH-MAP
+
+*
+======================================================================================================
+5) КЛАСС TREE-MAP
+
+*
+======================================================================================================
+6) ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ
+
+Best Data Structure for Dictionaries
+https://www.baeldung.com/cs/language-dictionary-data-structure
+
+Java Map
+https://jenkov.com/tutorials/java-collections/map.html
+
+A Guide to Java HashMap
+https://www.baeldung.com/java-hashmap
+
+Iterate Over a Map in Java
+https://www.baeldung.com/java-iterate-map
+
+Sorting Java Map in Descending Order
+https://www.baeldung.com/java-sort-map-descending
+
+Difference Between Map and HashMap in Java
+https://www.baeldung.com/java-map-vs-hashmap
+
+A Guide to LinkedHashMap in Java
+https://www.baeldung.com/java-linked-hashmap
+
+A Guide to TreeMap in Java
+https://www.baeldung.com/java-treemap
+
+Java TreeMap vs HashMap
+https://www.baeldung.com/java-treemap-vs-hashmap
+
+Java SortedMap
+https://jenkov.com/tutorials/java-collections/sortedmap.html
+
+Java NavigableMap
+https://jenkov.com/tutorials/java-collections/navigablemap.html
+
+Time Complexity of Java Collections
+https://www.baeldung.com/java-collections-complexity
+
+Understanding Hash Tables
+https://www.baeldung.com/cs/hash-tables
+
+*
+======================================================================================================
