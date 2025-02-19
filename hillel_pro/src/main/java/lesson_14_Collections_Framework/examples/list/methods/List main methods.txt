@@ -1,0 +1,9 @@
+add()
+add(int index)
+add(E element)
+
+get(int index)
+remove
+
+subList (int fromIndex, int toIndex) - возвращает часть списка между fromIndex (включительно), и toIndex (исключая).
+                                       Если fromIndex и toIndex равны, то возвращаемый список пустой.
