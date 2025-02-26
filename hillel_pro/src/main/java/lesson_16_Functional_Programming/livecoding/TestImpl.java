@@ -1,9 +1,9 @@
 package lesson_16_Functional_Programming.livecoding;
 
-public class TestImpl implements TestInterface, TestInterface2 {
+public class TestImpl implements TestInterface, TestInterface2{
     @Override
-    public int calculate(int a1, int a2) {
-        return a1 + a2;
+    public int calculate(int a, int b) {
+        return a + b;
     }
 
     @Override
@@ -12,33 +12,49 @@ public class TestImpl implements TestInterface, TestInterface2 {
     }
 
     public static void main(String[] args) {
-//        TestImpl sum = new TestImpl();
-//        System.out.println(sum.calculate(3, 5));
+        TestImpl test = new TestImpl();
+        System.out.println(test.calculate(3, 5));
 
-        // 1 Anonymous class
-//        TestInterface sum = new TestInterface() {
-//            @Override
-//            public int calculate(int a1, int a2) {
-//                return a1 + a2;
-//            }
-//        };
-//        sum.calculate(2,5);
+        // Реализация через Анонимный класс
+        TestInterface sum = new TestInterface() {
+            @Override
+            public int calculate(int a, int b) {
+                return a + b;
+            }
+        };
+        System.out.println(sum.calculate(3, 5));
 
-        //2 Lambdas
-//        TestInterface sum = (int a1, int a2) -> {
-//            return a1 + a2;
-//        };
+        // Через лямбду 1
+        TestInterface divide = (int a, int b) -> {
+            return a / b;
+        };
+        System.out.println(divide.calculate(100, 5));
 
-        //3 Lambdas
-//        TestInterface sum = (a1, a2) -> a1 + a2;
+        // Через лямбду 2 (более коротко).
+        TestInterface multi = (a, b) -> a * b;
+        System.out.println(multi.calculate(5, 2));
 
-        //4 Lambdas
-//        TestInterface sum = (a1,a2) -> Integer.sum(a1,a2);
+        // Через вызов статичного метода 1
+        TestInterface lamImp = (a,b) -> Integer.sum(a,b);
 
-        //5 Method reference
-        TestInterface sum = Integer::sum;
-        System.out.println(sum.calculate(4, 6));
+        // Через метод референс
+        /*
+        Метод референс может быть создан на 4 типа:
+        - Статические методы
+        - Методы экземпляра конкретных обьектов
+        - Методы экземпляра произвольного обьекта определенного типа
+        - Конструктор
 
+        Метод референс позволяет нам в лямбде сослаться одним из 4 видов референса на метод
+        имеющий идентичные входящие параметры и ту или иную готовую конкретную реализацию.
+        Здесь, учитывая что у нашего функционального интерфейса TestInterface имеется метод
+        calculate с двумя входящими параметрами, и у класса Integer имеется реализованный
+        метод sum с идентичными входящими параметрами и уже готовой логикой опаерации суммирования,
+        то мы в нашей лямбде через метод-референс ссылаемся на конкретную реализацию.
+         */
+        TestInterface methRef = Integer::sum;
+        TestInterface pow = Math::max;
+        System.out.println(pow.calculate(5, 2));
 
     }
 }
