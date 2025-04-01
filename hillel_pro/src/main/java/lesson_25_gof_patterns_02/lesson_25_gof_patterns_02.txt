@@ -1,0 +1,12 @@
+BEHAVIORAL:
+
+- Chain of Responsibility
+- Command
+
+STRUCTURAL:
+
+- Composite
+- Decorator
+- Facade
+- Flyweight
+- Proxy
