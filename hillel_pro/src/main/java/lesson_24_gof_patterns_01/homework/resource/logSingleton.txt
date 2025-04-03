@@ -1,0 +1,18 @@
+Are loggers equals: true
+ --- 
+Logger I hashCode: 500977346
+Logger II hashCode: 500977346
+Logger III hashCode: 500977346
+ --- 
+0 octopus - logger I
+0 hippopotamus - logger II
+0 zebra - logger III on the run
+1 octopus - logger I
+2 hippopotamus - logger II
+1 zebra - logger III on the run
+2 octopus - logger I
+4 hippopotamus - logger II
+2 zebra - logger III on the run
+3 octopus - logger I
+6 hippopotamus - logger II
+3 zebra - logger III on the run

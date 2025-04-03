@@ -27,6 +27,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
+    - name: Build maven-test project with Maven
+      working-directory: maven-test
+      run: mvn clean install
+    - name: Build hillel_pro project with Maven
       working-directory: hillel_pro
       run: mvn clean install
