@@ -7,12 +7,12 @@ package lesson_26_gof_patterns_03_grasp_solid.solid_examples;
  */
 
 // Абстрактный класс, представляющий фигуру
-abstract class Shape {
+abstract class OCPShape {
     abstract double area();
 }
 
 // Конкретный класс прямоугольника, который расширяет класс фигуры
-class Rectangle extends LSPShape {
+class Rectangle extends OCPShape {
     private double width;
     private double height;
 
@@ -28,7 +28,7 @@ class Rectangle extends LSPShape {
 }
 
 // Конкретный класс круга, который расширяет класс фигуры
-class Circle extends LSPShape {
+class Circle extends OCPShape {
     private double radius;
 
     public Circle(double radius) {
@@ -43,9 +43,9 @@ class Circle extends LSPShape {
 
 // Класс, который считает общую площадь фигур
 class AreaCalculator {
-    public double calculateTotalArea(LSPShape[] shapes) {
+    public double calculateTotalArea(OCPShape[] shapes) {
         double totalArea = 0;
-        for (LSPShape shape : shapes) {
+        for (OCPShape shape : shapes) {
             totalArea += shape.area(); // Вызывается метод area() для каждой фигуры, независимо от типа
         }
         return totalArea;
@@ -53,7 +53,7 @@ class AreaCalculator {
 }
 public class OpenClosePrinciple_Solid {
     public static void main(String[] args) {
-        LSPShape[] shapes = {new LSPRectangle(5, 4), new Circle(3)};
+        OCPShape[] shapes = {new Rectangle(5, 4), new Circle(3)};
         AreaCalculator calculator = new AreaCalculator();
         double totalArea = calculator.calculateTotalArea(shapes);
         System.out.println("Общая площадь фигур: " + totalArea);
