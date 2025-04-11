@@ -1,0 +1,5 @@
+https://dev.mysql.com/downloads/mysql/
+
+https://dev.mysql.com/doc/mysql-getting-started/en/
+
+https://www.w3schools.com/sql/default.asp
