@@ -1,0 +1,907 @@
+Урок 29 (Monday - 14.04.2025)
+Тема: JDBC. ORM
+======================================================================================================
+Ключевые разделы:
+
+1) ПОНЯТИЕ И НАЗНАЧЕНИЕ JDBC.
+2) ОСНОВНЫЕ КОМПОНЕНТЫ JDBC.
+3) ТИПИ JDBC ДРАЙВЕРОВ.
+4) ПОНЯТИЕ И НАЗНАЧЕНИЕ ORM.
+5) ПРИВЕДЕНИЕ SQL-ДАННИХ К ТИПАМ ДАННЫХ JAVA.
+6) ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ.
+
+======================================================================================================
+1) ПОНЯТИЕ И НАЗНАЧЕНИЕ JDBC.
+
+Java Database Connectivity (JDBC) — это API (Application Programming Interface) в процессе программи-
+                                    рования Java, который обеспечивает доступ Java-программ к базам
+                                    данных, используя стандартный способ.
+
+Основное назначение JDBC - это обеспечение возможности внедрения Java-программ с разными типами баз
+                           данных, использующих SQL-запросы.
+
+                               Основные функции и назначение JDBC:
+
+1. Подключение к различным базам данных: JDBC позволяет нам подключаться к различным базам данных,
+                                         таких как MySQL, PostgreSQL, Oracle, SQL Server итп.
+
+2. Выполнение SQL-запросов: Мы можем выполнять разнообразные SQL-запросы в базу данных, такие как
+                            DML: SELECT, INSERT, UPDATE, DELETE. Вообще, возможны все типы запросов.
+
+3. Обработка результатов запросов: JDBC позволяет получать результаты SQL-запросов в виде обьектов
+                                   Java, что делает дальнейшую обработку данных удобной и легкой в
+                                   наших программах.
+
+4. Управление транзакциями: Мы можем управлять транзакциями, таким образом JDBC обеспечивает целос-
+                            тность наших данных.
+
+5. Работа с метаданными: JDBC позволяет получать метаданные о базе данных, таблицы, столбцы итд, что
+                         позволяет нам динамично адаптировать наш код к структуре базы данных.
+
+6. Обработка исключений и ошибок: JDBC обеспечивает механизм обработки исключений и ошибок, что помо-
+                                  гает реализовать надежную логику обработки ошибок в ваших программах.
+
+В общем, JDBC является ключевым инструментом для работы с базами данных в Java-приложениях, поскольку
+он предоставляет простой и эффективный способ взаимодействия с разными типами баз данных.
+
+В рамках JDBC немаловажную роль играют метаданные. В JDBC, метаданные представляют информацию о базе
+данных, ее структуре и схеме. Они позволяют получить важные данные о базе данных, такие как имена таблиц,
+столбцов, типы данных, ограничение целостности данных, индексы и многое другое. Метаданные можно получить
+с помощью объекта типа DatabaseMetaData, который можно получить из объекта Connection.
+
+Некоторые типы метаданных, которые можно получить из JDBC:
+
+ - Имена таблиц и их структуры.
+ - Имена столбцов в каждой таблице и типы данных.
+ - Ограничение целостности данных, таких как ключи и ограничение уникальности.
+ - Индексы, существующие в базе данных.
+ - Другие параметры базы данных, такие как поддерживаемые SQL-типы, версия СУБД и т.д.
+
+Получение метаданных может быть полезным в различных сценариях, таких как генерация SQL запросов или
+создание абстракций для работы с базой данных. Например, метаданные могут использоваться для динамического
+создания запросов или построения моделей данных в уровне доступа к данным.
+
+============ ПРИМЕР ПОЛУЧЕНИЯ МЕТАДАННЫХ ============
+
+import java.sql.*;
+
+public class DatabaseMetadataExample {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/mydatabase";
+        String username = "root";
+        String password = "password";
+
+        try (Connection connection = getConnection(url, username, password)) {
+            DatabaseMetaData metadata = getDatabaseMetadata(connection);
+            printMetadata(metadata);
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static Connection getConnection(String url, String username, String password) throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
+
+    private static DatabaseMetaData getDatabaseMetadata(Connection connection) throws SQLException {
+        return connection.getMetaData();
+    }
+
+    private static void printMetadata(DatabaseMetaData metadata) throws SQLException {
+        System.out.println("Database name: " + metadata.getDatabaseProductName());
+        System.out.println("Database version: " + metadata.getDatabaseProductVersion());
+        System.out.println("Driver name: " + metadata.getDriverName());
+        System.out.println("Driver version: " + metadata.getDriverVersion());
+    }
+}
+
+В этом примере мы используем JDBC для получения метаданных о базе данных. После установления соединения
+с базой данных мы вызываем метод getMetaData() для получения объекта DatabaseMetaData. Далее мы используем
+ различные методы этого объекта, такие как getDatabaseProductName(), getDatabaseProductVersion(),
+ getDriverName(), getDriverVersion() для получения различных характеристик базы данных и драйвера JDBC.
+
+*
+======================================================================================================
+2) ОСНОВНЫЕ КОМПОНЕНТЫ JDBC.
+
+Основные компоненты JDBC включают в себя:
+
+=================
+!!!!!!!!!!!!!!!!!
+=================
+1. Driver Manager: Это класс отвечающий за управление драйверами JDBC. Он позволяет зарегистрировать
+                   драйвер базы данных и получить соединение с базой данных с помощью URL-адреса базы
+                   данных, пользователя и пароля.
+
+==== ПРИМЕР ДРАЙВЕР МЕНЕДЖЕРА С УСТАНОВЛЕННЫМ КОННЕКШНОМ ====
+
+import java.sql.*;
+
+public class PostgreSQLConnectionExample {
+
+    public static void main(String[] args) {
+        // Зарегистрировать драйвер PostgreSQL
+        registerPostgreSQLDriver();
+
+        // Переменные для подключения к БД
+        String url = "jdbc:postgresql://localhost:5432/my_database"; // Пример URL-адреса БД PostgreSQL
+        String username = "postgres";
+        String password = "password";
+
+        // Установление соединения с БД
+        try (Connection connection = connectToDatabase(url, username, password)) {
+            System.out.println("Connection successful!");
+        } catch (SQLException e) {
+            System.out.println("Connection failed!");
+        }
+    }
+
+    // Метод для регистрации драйвера PostgreSQL
+    private static void registerPostgreSQLDriver() {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("PostgreSQL JDBC Driver not found!");
+            return;
+        }
+    }
+
+    // Метод для подключения к БД PostgreSQL
+    private static Connection connectToDatabase(String url, String username, String password) throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
+}
+
+В этом примере мы сначала регистрируем драйвер базы данных PostgreSQL с помощью метода
+Class.forName(). Для PostgreSQL драйвера, строка "org.postgresql.Driver" указывает класс драйвера.
+
+После регистрации драйвера мы устанавливаем соединение с базой данных, используя метод
+DriverManager.getConnection(), в котором передаем URL базы данных, имя пользователя и
+пароль для аутентификации.
+
+Подключение закрывается автоматически после выполнения блока try с помощью конструкции
+try-with-resources. Это обеспечивает освобождение ресурсов и автоматическое закрытие соединения с
+базой данных после выполнения операций с ней.
+
+==========
+!!!!!!!!!!
+==========
+2. Driver: Это интерфейс, который определяет методы, которые должны реализовывать все JDBC-драйверы.
+           Каждый драйвер должен реализовать этот интерфейс, для того, что бы программы могли исполь-
+           зовать его для взаимодействия с определенной БД.
+
+Поскольку JDBC не требует явной инициализации драйвера с помощью Class.forName(), как это было в
+предыдущих версиях, много драйверов JDBC уже регистрируются автоматически при загрузки их классов.
+Таким образом, вызов Class.forName() в большинстве случаев больше не является обязательным.
+
+==== Тем не менее вот пример кода для полноты понимания ====
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class PostgreSQLConnectionExample {
+
+    public static void main(String[] args) {
+        // Явно регистрируем драйвер PostgreSQL
+        registerPostgreSQLDriver();
+
+        // Переменные содержащие данные для авторизации
+        String url = "jdbc:postgresql://localhost:5432/my_database";
+        String username = "postgres";
+        String password = "password";
+
+        // Установка соединения с БД
+        try (Connection connection = connectToDatabase(url, username, password)) {
+            System.out.println("Connection successful!");
+        } catch (SQLException e) {
+            System.out.println("Connection failed!");
+        }
+    }
+
+    // Метод для регистрации драйвера PostgreSQL
+    private static void registerPostgreSQLDriver() {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("PostgreSQL JDBC Driver not found!");
+            return;
+        }
+    }
+
+    // Метод для подключения к БД PostgreSQL
+    private static Connection connectToDatabase(String url, String username, String password) throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
+}
+
+В этом примере:
+
+Мы явно регистрируем драйвер базы данных PostgreSQL с помощью метода Class.forName(), передавая полное
+имя классу драйвера "org.postgresql.Driver". После регистрации драйвера мы устанавливаем соединение с
+базой данных PostgreSQL, используя метод DriverManager.getConnection(), в котором передаем URL-адрес
+базы данных, имя пользователя и пароль.
+Подключение закрывается автоматически после выполнения блока try с помощью конструкции try-with-resources,
+что гарантирует освобождение ресурсов после выполнения операций с базой данных.
+
+=============
+!!!!!!!!!!!!!
+=============
+3.Connection: Этот интерфейс представляет соединение с базой данных. Объекты типа Connection создаются
+с помощью DriverManager и используются для выполнения SQL-запросов и управления транзакциями.
+
+Для подключения к базе данных PostgreSQL обычно используют класс Connection.
+
+==== ПРИМЕР КОДА ВЫПОЛНЕНИЯ ПОДКЛЮЧЕНИЯ ПРИ ПОМОЩИ КЛАССА CONNECTION ====
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class PostgreSQLConnectionExample {
+
+    public static void main(String[] args) {
+        Connection connection = null;
+        try {
+            // Креденшлы для связи с БД PostgreSQL
+            String url = "jdbc:postgresql://localhost:5432/my_database";
+            String username = "postgres";
+            String password = "password";
+
+            // Устанавливаем соединение с БД
+            connection = DriverManager.getConnection(url, username, password);
+            System.out.println("Connection successful!");
+        } catch (SQLException e) {
+            System.out.println("Connection failed!");
+        } finally {
+            try {
+                // Закрываем соединение
+                if (connection != null) {
+                    connection.close();
+                    System.out.println("Connection closed!");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error");
+            }
+        }
+    }
+}
+
+В этом примере:
+
+Мы используем класс Connection для создания соединения с базой данных PostgreSQL. Используем метод
+DriverManager.getConnection() для получения соединения, передавая URL-адрес базы данных, имя
+пользователя и пароль. Используя блок try-catch-finally, мы обрабатываем возможные исключения, которые
+могут возникнуть при установке соединения. В блоке finally мы закрываем соединение в случае, если оно
+успешно установлено. Это важно для освобождения ресурсов и поддержания надежности программы.
+Результатом выполнения этого кода будет вывод сообщения "Connection successful!", если соединение успешно
+установлено, или сообщение об ошибке подключения в противном случае.
+
+============
+!!!!!!!!!!!!
+============
+4.Statement: Этот интерфейс позволяет выполнять SQL-запросы в базу данных. Он имеет разные реализации,
+такие как Statement, PreparedStatement и CallableStatement, которые используются для различных типов
+запросов и подготовки параметров.
+
+==> STATEMENT <==
+
+Описание интерфейса Statement:
+Statement является основным интерфейсом выполнения SQL-запросов в Java. Он используется для выполнения
+простых SQL запросов без параметров.
+
+Пример кода:
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM table_name");
+
+Описание результата: ResultSet содержит результаты запроса, который выполняется с помощью statement.
+
+ ==> PREPARED STATEMENT <==
+
+Описание интерфейса PreparedStatement:
+PreparedStatement используется для выполнения SQL запросов, содержащих параметры. Это улучшенная
+версия Statement, позволяющая вставлять параметры непосредственно в запрос избегать SQL инъекций.
+
+Пример кода:
+PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO table_name VALUES (?, ?, ?)");
+    preparedStatement.setString(1, "value1");
+    preparedStatement.setInt(2, 10);
+    preparedStatement.setString(3, "value3");
+    preparedStatement.executeUpdate();
+
+Описание результата:
+SQL-запрос будет выполнен с установленными параметрами и изменения будут применены к базе данных.
+
+==> CALLABLE STATEMENT <==
+
+Описание интерфейса CallableStatement:
+CallableStatement используется для вызова хранимых процедур базы данных. Это позволяет выполнить
+SQL-запросы, используемые в созданных в базе данных процедурах или функциях.
+
+Пример кода:
+CallableStatement callableStatement = connection.prepareCall("{call procedure_name(?, ?)}");
+    callableStatement.setInt(1, parameter1);
+    callableStatement.setString(2, parameter2);
+    callableStatement.execute();
+
+Описание результата:
+Процедура базы данных будет вызвана переданными параметрами, и изменения, которые она выполняет, будут
+применены к базе данных.
+
+==== Пример кода для использования класса Statement для выполнения SQL-запросов в базу данных
+PostgreSQL ====
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+public class PostgreSQLStatementExample {
+
+    public static void main(String[] args) {
+        // Переменные для подключения к БД
+        String url = "jdbc:postgresql://localhost:5432/my_database";
+        String username = "postgres";
+        String password = "password";
+
+        try (Connection connection = connectToDatabase(url, username, password);
+             Statement statement = createStatement(connection);
+             ResultSet resultSet = executeQuery(statement, "SELECT * FROM my_table")) {
+
+            // Обрабатываем результат запроса
+            while (resultSet.next()) {
+                // Получаем данные с каждой строки
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+
+                // Выводим результат в консоль
+                System.out.println("ID: " + id + ", Name: " + name + ", Age: " + age);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection or statement execution failed!");
+        }
+    }
+
+    // Метод для подключения к БД PostgreSQL
+    private static Connection connectToDatabase(String url, String username, String password) throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
+
+    // Метод для создания обьекта Statement
+    private static Statement createStatement(Connection connection) throws SQLException {
+        return connection.createStatement();
+    }
+
+    // Метод для выполнения SQL-запроса
+    private static ResultSet executeQuery(Statement statement, String sqlQuery) throws SQLException {
+        return statement.executeQuery(sqlQuery);
+    }
+}
+
+В этом примере:
+
+Мы используем класс Statement для создания объекта, который будет использоваться для выполнения
+SQL-запросов в базу данных.После выполнения SQL-запроса результат записывается в виде объекта
+ResultSet. Мы выводим данные из ResultSet с помощью метода resultSet.next() и получаем значение для
+каждого поля. После выполнения операций с базой данных, использованы try-with-resources для автоматиче-
+ского закрытия ресурсов.
+
+============
+!!!!!!!!!!!!
+============
+5.ResultSet: Этот интерфейс представляет результат запроса в базу данных. Объекты типа ResultSet
+             позволяют получать данные по результатам запроса, передвигаться по результатам и
+             получать метаданные о результатах.
+
+Пример кода, использующего класс ResultSet для получения результатов запроса в базу данных PostgreSQL:
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+public class PostgreSQLResultSetExample {
+
+    public static void main(String[] args) {
+        // Переменные с данными для авторизации в базе данных
+        String url = "jdbc:postgresql://localhost:5432/my_database";
+        String username = "postgres";
+        String password = "password";
+
+        try (Connection connection = connectToDatabase(url, username, password);
+             Statement statement = createStatement(connection);
+             ResultSet resultSet = executeQuery(statement, "SELECT * FROM my_table")) {
+
+            // Обрабатываем результат запроса
+            while (resultSet.next()) {
+                // Получаем данные из каждой строки
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+
+                // Выводим результат на экран
+                System.out.println("ID: " + id + ", Name: " + name + ", Age: " + age);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection or statement execution failed!");
+        }
+    }
+
+    // Метод для подключения к БД PostgreSQL
+    private static Connection connectToDatabase(String url, String username, String password) throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
+
+    // Метод для создания обькта Statement
+    private static Statement createStatement(Connection connection) throws SQLException {
+        return connection.createStatement();
+    }
+
+    // Метод для выполнения SQL-запроса
+    private static ResultSet executeQuery(Statement statement, String sqlQuery) throws SQLException {
+        return statement.executeQuery(sqlQuery);
+    }
+}
+
+В этом примере:
+
+Мы используем класс ResultSet для хранения результатов запроса в базу данных. Метод resultSet.next()
+перемещает указатель на следующую строчку результатов и возвращает true, если такая строка существует,
+или false, если результаты закончились. Методы getInt(), getString() и другие позволяют извлечь
+значения из каждого поля результата. Использованы try-with-resources для автоматического закрытия
+ресурсов.
+
+==============
+!!!!!!!!!!!!!!
+==============
+6.SQLException: Это класс, который используется для обработки ошибок, связанных с выполнением SQL
+                запросов. Этот класс содержит информацию об ошибке, такую, как сообщение об ошибке,
+                код ошибки и т.д.
+
+Пример кода, демонстрирующий использование обработки ошибок класса SQLException при выполнении
+запросов в базу данных PostgreSQL:
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+public class PostgreSQLSQLExceptionExample {
+
+    public static void main(String[] args) {
+        // Переменные для подключения к БД
+        String url = "jdbc:postgresql://localhost:5432/my_database";
+        String username = "postgres";
+        String password = "password";
+
+        try (Connection connection = connectToDatabase(url, username, password);
+             Statement statement = createStatement(connection);
+             ResultSet resultSet = executeQuery(statement, "SELECT * FROM non_existent_table")) {
+
+            // Блок кода в котором может возникнуть SQLException
+
+        } catch (SQLException e) {
+            System.out.println("SQLException occurred!");
+        }
+    }
+
+    // Метод для подключения к БД PostgreSQL
+    private static Connection connectToDatabase(String url, String username, String password) throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
+
+    // Метод для создания обьекта Statement
+    private static Statement createStatement(Connection connection) throws SQLException {
+        return connection.createStatement();
+    }
+
+    // Метод для выполнения SQL-запроса
+    private static ResultSet executeQuery(Statement statement, String sqlQuery) throws SQLException {
+        return statement.executeQuery(sqlQuery);
+    }
+}
+
+В этом примере:
+
+Мы стараемся выполнить SQL-запрос, содержащий синтаксическую ошибку (например, указывает на
+несуществующую таблицу). При выполнении такого запроса будет выброшена исключительная ситуация
+SQLException. Мы обрабатываем эту ошибку в блоке catch(SQLException e)
+
+Все вышеперечисленные компоненты:
+
+* Class DriverManager,
+* Interface Driver,
+* Interface Connection,
+* Interface Statement,
+* Interface ResultSet,
+* Class SQLException,
+
+ являются основными строительными блоками для взаимодействия с базами данных в Java приложениях с
+ помощью JDBC. Они позволяют программистам подключаться к базам данных, выполнять SQL-запросы и
+ обрабатывать результаты взаимодействия с базой данных.
+
+*
+======================================================================================================
+3) ТИПИ JDBC ДРАЙВЕРОВ.
+
+Существует четыре типа драйверов JDBC, которые определены спецификацией JDBC. Вот краткое описание
+каждого из них:
+
+1.JDBC-ODBC мост (JDBC-ODBC Bridge Driver):
+
+Этот драйвер использует мост ODBC (Open Database Connectivity) для подключения к базе данных.
+Легкий в использовании, поскольку обеспечивает общую точку доступа к данным через ODBC.
+Однако, его использование менее эффективно, поскольку он требует дополнительных обращений к среде ODBC.
+
+2.Нативный API-драйвер (Native-API Driver):
+
+Этот драйвер использует нативные библиотеки клиента базы данных, предоставляемые производителем базы
+данных. Он прямо вызывает API базы данных, что обеспечивает более быстрый доступ и повышает
+производительность. Однако использование этого драйвера требует присутствия библиотеки на клиентской
+машине, что делает его менее переносимым.
+
+3.Сетевой драйвер (Network Protocol Driver):
+
+Этот драйвер использует сетевой протокол для взаимодействия с сервером базы данных, используя
+специализированные протоколы, такие как TCP/IP. Он гораздо эффективнее JDBC-ODBC Bridge Driver,
+поскольку прямо общается с сервером базы данных. Этот драйвер также более переносим, поскольку
+не требует установки специального ПО на клиентской машине.
+
+4.Чистый Java-драйвер (Thin Driver):
+
+Этот драйвер полностью реализован на языке Java и не использует нативные библиотеки или
+протоколы. Он взаимодействует с сервером базы данных конкретно через сеть, конкретно реализуя
+протоколы коммуникации. Это наиболее переносимый драйвер, но может быть менее эффективен в
+использовании по сравнению с нативными драйверами.
+
+Сравнительный анализ четырех типов JDBC драйверов:
+
+1. JDBC-ODBC вместительный (JDBC-ODBC Bridge Driver):
+
+Плюсы:
+
+Легкий в использовании и реализации.
+Совместим с любой базой данных, поддерживающей ODBC.
+
+Минусы:
+
+Требует дополнительных компонентов, таких как ODBC.
+Может быть менее эффективным из-за дополнительного доступа к данным.
+
+2. Нативный API-драйвер (Native-API Driver):
+
+Плюсы:
+
+ Быстро и эффективно, поскольку использует нативные библиотеки базы данных.
+ Обеспечивает прямой доступ к базе данных API.
+
+Минусы:
+
+ Требует соответствующих нативных библиотек на клиентской машине.
+ Может быть менее переносимым из-за зависимости от платформы.
+
+3. Сетевой драйвер (Network Protocol Driver):
+
+Плюсы:
+
+ Быстро и эффективно, так как взаимодействует непосредственно с сервером базы данных.
+ Более переносим, поскольку не требует установки специальных компонентов на клиентской машине.
+
+Минусы:
+
+Может быть сложнее в настройке по сравнению с JDBC-ODBC вместительным и нативными драйверами.
+
+4. Чистый Java-драйвер (Thin Driver):
+
+Плюсы:
+
+Наиболее переносим, поскольку полностью реализован на языке Java.
+Легче использовать, поскольку не требует наличия дополнительных библиотек или протоколов.
+
+Минусы:
+
+Может быть менее эффективным, поскольку взаимодействует с сервером базы данных по сети, что может
+привести к дополнительным накладным расходам.
+
+Общие примеры использования драйверов JDBC:
+
+JDBC-ODBC вместительный (JDBC-ODBC Bridge Driver):
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class JDBCODBCBridgeExample {
+    public static void main(String[] args) {
+        try (Connection conn = connectToDatabase()) {
+            System.out.println("Connected successfully!");
+        } catch (SQLException e) {
+            System.out.println("Error");
+        }
+    }
+
+    // Метод для подключения к БД JDBC-ODBC
+    private static Connection connectToDatabase() throws SQLException {
+        try {
+            // Регистрируем дрейвер JDBC-ODBC
+            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("JDBC-ODBC driver not found");
+        }
+
+        // Параметры подключения к источнику данных через ODBC
+        String url = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=C:/mydatabase.mdb";
+        String user = "username";
+        String password = "password";
+
+        // Возвращаем обьект соединения
+        return DriverManager.getConnection(url, user, password);
+    }
+}
+
+В этом примере мы используем драйвер JDBC-ODBC Bridge для подключения к базе данных Microsoft Access
+с помощью ODBC.
+
+2.Чистый Java-драйвер (Thin Driver):
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class NativeAPIDriverExample {
+    public static void main(String[] args) {
+        try (Connection conn = connectToDatabase()) {
+            System.out.println("Connected successfully!");
+        } catch (SQLException e) {
+            System.out.println("Error");
+        }
+    }
+
+    // Метод для подключения к PostgreSQL
+    private static Connection connectToDatabase() throws SQLException {
+        try {
+            // Регистрируем драйвер PostgreSQL
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("PostgreSQL JDBC Driver not found");
+        }
+
+        // Параметры подключения к БД PostgreSQL
+        String url = "jdbc:postgresql://localhost:5432/my_database";
+        String user = "username";
+        String password = "password";
+
+        // Возвращаем обьект соединения
+        return DriverManager.getConnection(url, user, password);
+    }
+}
+
+В этом примере мы используем чистый Java-драйвер для подключения к базе данных PostgreSQL.
+
+*
+======================================================================================================
+4) ПОНЯТИЕ И НАЗНАЧЕНИЕ ORM.
+
+ORM (Object-Relational Mapping) – это технология программирования, которая позволяет использовать
+объектно-ориентированный подход при работе с базами данных, избежав прямого использования языка SQL.
+Основное назначение ORM – это отображение объектов программного кода на записи базы данных и наоборот,
+т.е.
+
+Главная идея ORM состоит в том, чтобы программист мог работать с объектами классов, отображающими данные
+из базы данных, без прямого использования языка запросов SQL. ORM-фреймворки автоматически генерируют
+SQL-запросы на основе взаимосвязей между объектами классов, выполняют эти запросы и возвращают результаты
+в виде объектов кода.
+
+ORM упрощает разработку программного обеспечения, поскольку позволяет программистам работать на более
+высоком уровне абстракции, изолируя их от деталей взаимодействия с базой данных. настройки, а также
+может не всегда обеспечивать оптимальную производительность по сравнению с ручным написанием SQL
+запросов.
+
+ORM (Object-Relational Mapping) следует использовать в следующих ситуациях:
+
+1) Когда работа с базой данных предполагает использование объектно-ориентированного подхода. ORM
+   позволяет работать с объектами классов, что упрощает разработку и поддержку программного кода.
+
+2) Когда необходимо обеспечить переносимость кода между разными СУБД. ORM-фреймворки могут генерировать
+   SQL-запросы, совместимые с разными базами данных, поэтому вы можете легко перемещать ваше приложение
+   между разными платформами без значительных изменений в коде.
+
+3) Когда работа с базой данных требует выполнения многих операций с данными. ORM позволяет
+автоматизировать многие рутинные операции, такие как создание, обновление, удаление и поиск данных.
+
+4) Когда необходимо обеспечить отсутствие SQL-инъекций и других проблем безопасности. ORM может
+автоматически генерировать безопасные SQL запросы, используя параметризированные запросы и другие
+методы защиты.
+
+5) Когда необходимо уменьшить количество кода, который необходимо написать и поддерживать. ORM может
+значительно сократить количество кода, необходимого для взаимодействия с базой данных и упростить
+разработку и поддержку программного кода.
+
+Обобщая ORM следует использовать там, где он может упростить взаимодействие с базой данных, повысить
+переносимость кода и повысить безопасность программного кода. Однако следует помнить, что ORM не
+всегда является оптимальным выбором и для некоторых приложений может быть лучше использовать ручное
+написание SQL-запросов.
+
+ORM TOOLS: Hibernate, OpenJPA, TopLink, eclipselink, MyBaits, iBATIS.
+
+Существует несколько популярных ORM (Object-Relational Mapping) фреймворков для Java, которые упрощают
+взаимодействие с базами данных и позволяют работать с данными как с объектами.
+
+1) Hibernate: Это один из самых популярных ORM-фреймворков для Java. Hibernate позволяет отображать
+              объекты Java на таблице базы данных и использовать язык запросов HQL (Hibernate Query
+              Language) для взаимодействия с данными.
+
+2) Java Persistence API (JPA): JPA является стандартом ORM для Java EE (Enterprise Edition) и предоставляет
+                               способ работы с объектами Java в базе данных, независимо от конкретного
+                               поставщика ORM JPA может быть реализован с помощью различных провайдеров,
+                               таких как Hibernate, EclipseLink, OpenJPA и т.д.
+
+3) EclipseLink: Это другой популярный ORM-фреймворк, который является стандартным провайдером JPA для
+                платформы Java EE.
+
+4) MyBatis: Это легкий ORM-фреймворк для Java, который предоставляет мапирование SQL-запросов к методам
+            Java-интерфейсов.
+
+5) ActiveJDBC: Это ORM-фреймворк, который позволяет работать с базами данных с помощью моделей
+               ActiveRecord, подобных используемым в Ruby on Rails, предоставляет простой и удобный
+               способ взаимодействия с базами данных в стиле ORM.
+
+Эти ORM-фреймворки позволяют программистам работать с данными базы данных в объектно-ориентированном
+стиле, упрощая разработку программного обеспечения и обеспечивая более высокий уровень абстракции при
+работе с базой данных.
+
+Пример простого использования ORM (используя фреймворк Hibernate) для сохранения и получения объектов
+из базы данных:
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "employees")
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "age")
+    private int age;
+
+    // Геттеры и сеттеры
+}
+
+public class Main {
+    public static void main(String[] args) {
+        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            Transaction transaction = null;
+            try {
+                transaction = session.beginTransaction();
+
+                // Сохранение обьекта в БД
+                Employee employee = new Employee();
+                employee.setName("John Doe");
+                employee.setAge(30);
+                session.save(employee);
+
+                // Получение обьекта из БД по его идентификатору
+                Employee retrievedEmployee = session.get(Employee.class, employee.getId());
+                System.out.println("Retrieved employee: " + retrievedEmployee.getName()
+                + ", " + retrievedEmployee.getAge());
+
+                transaction.commit();
+            } catch (Exception e) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+                System.out.println("Error");
+            }
+        } catch (Exception e) {
+            System.out.println("Error");
+        }
+    }
+}
+
+В этом примере мы определяем класс Employee, который аннотируется как сущность JPA с помощью аннотаций
+@Entity, @Table, @Id и других. Этот класс отображается на таблицу employees в базе данных. Мы также
+используем Hibernate для сохранения объекта Employee в базе данных с помощью метода session.save() и
+получения объекта из базы данных по его идентификатору с помощью метода session.get().
+
+*
+======================================================================================================
+5) ПРИВЕДЕНИЕ SQL-ДАННИХ К ТИПАМ ДАННЫХ JAVA.
+
+Приведение данных SQL к типам данных Java является важной операцией в разработке программного обеспечения,
+особенно при работе с базами данных. Вот некоторые важные причины, почему это делается:
+
+1) Консистентность данных: Приведение SQL-данных в типы данных Java помогает обеспечить консистентность
+данных между базой данных и приложением, работающим с этими данными. Это важно для обеспечения правильного
+функционирования программы и избегания ошибок.
+
+2) Безопасность: Правильное приведение типов данных позволяет избежать возможных проблем безопасности,
+таких как SQL-инъекции. Подходящее приведение типов может обеспечить корректную обработку и экранирование
+данных, получаемых из базы данных.
+
+3) Удобство работы с данными: Использование правильных типов данных в Java упрощает работу с полученными
+данными. К примеру, если колонка базы данных содержит дату, то приведение ее к типу java.sql.Date позволяет
+легко выполнять операции сравнения, форматирования и другие манипуляции с датами.
+
+4) Читаемость кода: Использование правильных типов данных делает код более понятным другим разработчикам.
+Если типы данных соответствуют природе данных, с которыми работает программа, это упрощает понимание и
+понимание кода.
+
+Приведение данных SQL к типам данных Java может выполняться с помощью встроенных методов в JDBC, а именно
+методов ResultSet и PreparedStatement.
+
+Ниже приведены некоторые примеры приведения данных из SQL к типам данных Java:
+
+** Приведение строк (VARCHAR, CHAR) к типу String:
+                                                    String name = resultSet.getString("name");
+
+** Приведение целых чисел (INTEGER, BIGINT) к типу int:
+
+                                                    int age = resultSet.getInt("age");
+
+** Приведение чисел с плавающей точкой (DECIMAL, FLOAT, DOUBLE) к типу double:
+
+                                                    double price = resultSet.getDouble("price");
+
+** Приведение дат и времени (DATE, TIMESTAMP) к типу java.sql.Date или java.sql.Timestamp:
+
+                            Date date = resultSet.getDate("date_column");
+                            Timestamp timestamp = resultSet.getTimestamp("timestamp_column");
+
+** Приведение булевых значений (BOOLEAN) к типу boolean:
+
+                            boolean isActive = resultSet.getBoolean("is_active");
+
+** Приведение больших объектов (BLOB, CLOB) к типу java.sql.Blob или java.sql.Clob:
+
+                            Blob blob = resultSet.getBlob("blob_column");
+                            Clob clob = resultSet.getClob("clob_column");
+
+В вышеприведенных примерах resultSet - это объект класса ResultSet, который представляет результат
+запроса к базе данных.
+
+Вне встроенных ранее ResultSet методов для приведения типов данных SQL к типам данных Java существуют
+другие способы, в частности:
+
+Использование специализированных библиотек или фреймворков: Существуют посторонние библиотеки, такие
+как Apache Commons DBUtils или Spring JDBC, которые предоставляют дополнительные инструменты для работы
+с базой данных. Эти библиотеки могут автоматически выполнять приведение типов данных SQL к типам данных
+Java.
+
+Ручное приведение типов: В некоторых случаях можно использовать методы для ручного приведения типов данных.
+Например, для приведения типа Object к String можно использовать метод toString(), а для приведения Object
+к числовым типам - методы intValue(), doubleValue(), и т. д. Однако такой подход может быть менее эффективным
+и менее надежным.
+
+Использование ORM (Object-Relational Mapping): ORM-фреймворки, такие как Hibernate, JPA, MyBatis и т.п.,
+обычно автоматически выполняют приведение типов данных между SQL и Java. Они обеспечивают возможность
+использования объектов классов Java вместо примитивных типов данных SQL и автоматически выполняют
+конвертацию между ними.
+
+В каждом конкретном случае оптимальный способ приведения типов может зависеть от конкретных требований и
+особенностей приложения.
+
+*
+======================================================================================================
+6) ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ.
+
+    https://www.baeldung.com/java-jdbc
+
+    https://www.geeksforgeeks.org/introduction-to-jdbc/
+
+    https://www.javatpoint.com/orm-tools-in-java
+
+    https://www.baeldung.com/cs/object-relational-mapping
+
+    https://www.altexsoft.com/blog/object-relational-mapping-tools/
+
+*
+======================================================================================================
