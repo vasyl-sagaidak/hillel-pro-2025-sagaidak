@@ -1,4 +1,4 @@
-package lesson_29_JDBC.dto;
+package lesson_29_JDBC.classwork.dto;
 
 import lombok.AllArgsConstructor;
 

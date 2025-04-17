@@ -1,8 +1,8 @@
-package lesson_29_JDBC.dao;
+package lesson_29_JDBC.classwork.dao;
 
 import java.util.List;
 import java.util.ArrayList;
-import lesson_29_JDBC.dto.Student;
+import lesson_29_JDBC.classwork.dto.Student;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
