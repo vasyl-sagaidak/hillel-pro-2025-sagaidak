@@ -1,9 +1,5 @@
-package lesson_29_JDBC;
+package lesson_29_JDBC.classwork;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,7 +16,7 @@ public class DBConnect {
         // Это креденшиалы которые нужны для коннекта к базе
         String url = "jdbc:postgresql://127.0.0.1:5432/hillel";
         String login = "postgres";
-        String password = "skogsprak";
+        String password = "password";
 
         // 1) DriverManager возвращает нам инстанс коннекшна
         try (Connection connection = DriverManager.getConnection(url, login, password)) {
