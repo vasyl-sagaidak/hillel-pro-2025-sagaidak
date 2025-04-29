@@ -1,6 +1,7 @@
 package lesson_29_JDBC.dao;
 
-import lesson_29_JDBC.dto.Student;
+import lesson_29_JDBC.classwork.dao.StudentDAO;
+import lesson_29_JDBC.classwork.dto.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -1,7 +1,6 @@
 package lesson_30_JPA_and_Hibernate.homework.dto;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,13 +32,13 @@ public class Student {
     private final Set<Homework> homeworks = new HashSet<>();
 
     public void addHomework(final Homework homework) {
-        //TODO implement this method
         homeworks.add(homework);
+        homework.setStudent(this);
     }
 
     public void removeHomework(final Homework homework) {
-        //TODO implement this method
         homeworks.remove(homework);
+        homework.setStudent(null);
 
     }
 
@@ -64,4 +63,15 @@ public class Student {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+               "firstName='" + firstName + '\'' +
+               ", lastName='" + lastName + '\'' +
+               ", email='" + email + '\'' +
+               '}';
+    }
 }
+
+
