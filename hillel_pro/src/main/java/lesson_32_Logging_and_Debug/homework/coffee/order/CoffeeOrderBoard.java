@@ -11,7 +11,7 @@ import java.util.Queue;
 public class CoffeeOrderBoard {
     private static final Logger LOGGER = LogManager.getLogger(CoffeeOrderBoard.class);
     private int orderCounter;
-    private Queue<Order> orderQueue;
+    private final Queue<Order> orderQueue;
 
     public CoffeeOrderBoard() {
         LOGGER.info("Queue has been initialized.");
@@ -23,7 +23,7 @@ public class CoffeeOrderBoard {
             order.setOrderId(++orderCounter);
             LOGGER.debug("Trying to add new order into the queue.");
             orderQueue.add(order);
-            LOGGER.info("New order #" + orderCounter +  " was recently placed on order board.");
+            LOGGER.info("New order # {} was recently placed on order board.", orderCounter);
             return true;
         }
         return false;
@@ -41,7 +41,7 @@ public class CoffeeOrderBoard {
     }
 
     public Order deliver(int id) {
-        LOGGER.info("Deliver order out of queue, by it's id.");
+        LOGGER.info("Deliver order out of queue, by it's id={}", id);
     Iterator<Order> iterator = orderQueue.iterator();
     while (iterator.hasNext()) {
         Order current = iterator.next();
@@ -55,7 +55,7 @@ public class CoffeeOrderBoard {
         try {
             throw new NullPointerException();
         } catch (Exception e) {
-            LOGGER.error("There is no orders matching this id");
+            LOGGER.error("There is no orders matching this id: {}", id);
             throw new IllegalArgumentException(e);
         }
     }
