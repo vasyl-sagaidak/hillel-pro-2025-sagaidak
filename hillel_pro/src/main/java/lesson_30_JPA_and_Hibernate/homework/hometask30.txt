@@ -1,0 +1,93 @@
+1.Налаштувати Hibernate за допомогою persistence.xml:
+
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+       version="2.1">
+
+  <persistence-unit name="hillel-persistence-unit" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <!-- Додати класи Student та Homework-->
+
+
+    <!-- Налаштувати підключення до бази даних PostgreSQL:
+       вказати властивості driver, url, user, password -->
+    <properties>
+      <property name="jakarta.persistence.jdbc.driver" value=""/>
+      <property name="jakarta.persistence.jdbc.url" value=""/>
+      <property name="jakarta.persistence.jdbc.user" value=""/>
+      <property name="jakarta.persistence.jdbc.password" value=""/>
+
+
+      <!-- Вказати dialect для PostgreSQL -->
+      <property name="hibernate.dialect" value=""/>
+      <property name="hibernate.show_sql" value=""/>
+      <property name="hibernate.hbm2ddl.auto" value=""/>
+    </properties>
+  </persistence-unit>
+</persistence>
+
+2.Є клас Student наступної структури:
+
+public class Student {
+
+  private Long id;
+  private String firstName;
+  private String lastName;
+  private String email;
+  private Set<Homework> homeworks = new HashSet<>();
+
+  public void addHomework(final Homework homework) {
+    // TODO implement this method
+  }
+
+  public void removeHomework(final Homework homework) {
+    // TODO implement this method
+  }
+}
+
+Потрібно додати геттери, сеттери, імплементувати equals та hashCode по полю id,
+а також додати toString метод.Позначити клас як entity, додати відповідні мапінги для полів,
+всі записи повинні додаватися в таблицю student. Імплементувати методи addHomework та
+removeHomework,які відповідають за додавання домашки до списку (homeworks) або видалення з нього.
+
+2. Є клас Homework наступної структури:
+
+public class Homework {
+
+  private Long id;
+  private String description;
+  private LocalDate deadline;
+  private int mark;
+  private Student student;
+}
+
+Додати геттери, сеттери, імплементувати equals та hashCode по полю id,
+а також додати toString метод. Позначити клас як entity, додати відповідні
+мапінги для полів, всі записи повинні додаватися в таблицю homework.
+
+3.Для роботи із цими класами є інтерфейс GenericDao із наступними методами:
+
+public interface GenericDao<T, ID> {
+
+  void save(T entity);
+
+  T findById(ID id);
+
+  T findByEmail(String email);
+
+  List<T> findAll();
+
+  Student update(T entity);
+
+  boolean deleteById(ID id);
+
+}
+
+де Т - це тип класу, з яким буде працювати реалізація цього інтерфейсу,
+наприклад Student, а ID - це тип ідентифікатора сутності (первинного ключа).
+
+Імплементувати інтерфейс GenericDao із вказанням типів T - Student, ID - Long.
+
+4.Впевнитися, що імплементація написана вірно за допомогою тестів
+(тести вже написані, вони повинні всі пройти - див. приклад реалізації нижче).

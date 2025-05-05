@@ -9,32 +9,630 @@
 4) Додаткові матеріали
 
 ======================================================================================================
-1) ПОНЯТТЯ JPA
+1) ПОНЯТИЕ JPA
 
-JPA (Java/Jakarta Persistence API) це специфікація Java EE i Java SE, що описує систему управління збе-
-реженням Java об'єктів у таблиці реляційних баз даних у зручному вигляді. Сама Java не містить реаліза-
-ції JPA, проте є багато реалізацій даної специфікації від різних компаній (відкритих та не дуже).
+JPA (Java/Jakarta Persistence API) это спецификация Java EE и Java SE, описывающая систему управления
+сохранением Java объектов в таблицы реляционных баз данных в удобном виде. Сама Java не содержит реализа-
+ции JPA, однако есть много реализаций данной спецификации от разных компаний (открытых и не очень).
 
-ORM (Object-Relational Mapping, об'єктно реляційне відображення, або перетворення) - технологія програ-
-мування, яка пов'язує бази даних з концепціями об'єктно-орієнтованих мов програмування, створюючи "вір-
-туальну об'єктну базу даних". Дозволяє створити асоциацію між об'єктами в Java та реляційними таблицями.
+ORM (Object-Relational Mapping, объектно реляционное отображение, или преобразование) - технология програм-
+мирования, связывающая базы данных с концепциями объектно-ориентированных языков программирования, создавая
+"виртуальную обьектную БД". Позволяет создать ассоциацию между объектами в Java и реляционными таблицами.
 
-Caching (Кешування) - механізм підвищення продуктивності системи. Це буферна пам'ять, яка знаходиться
-між додатком та базою даних. Кеш-пам'ять зберігає нещодавно використані елементи даних, щоб максимально
-зменшити кількість звернень до бази даних. Кешування також важливе для Hibernate, який використовує
-багаторівневу схему кешування.
+Caching (Кеширование) – механизм повышения производительности системы. Это буферная память, которая
+расположена как посредник между самим приложением и базой данных. Кэш-память сохраняет недавно использо-
+ванные элементы данных, чтобы максимально уменьшить количество обращений в базу данных. Кэширование также
+важно для Hibernate Framework, использующего многоуровневую схему кэширования.
+
+=====================================
+В чем состоят ключевые концепции JPA?
+=====================================
+
+1. Сущность (Entity):
+
+   Entity это обьект, который является отображением записи в базе данных. Определяется классом Java,
+   аннотированным как @Entity.
+
+2. Маппинг-обьектов (Object-Relational Mapping, ORM):
+
+   Процесс отображения(маппинга) обьектов Java на таблицы в БД и наоборот. Используется для обеспечения
+   взаимодействия между обьектно-ориентированной и реляционной моделями данных.
+
+3. Аннотации JPA:
+
+   Механизм инструкций для JPA, который позволяет указывать конфигурацию и взаимосвязи между обьектами и
+   таблицами.
+
+4. EntityManager:
+
+   Интерфейс JPA для выполнения (C)reate (R)ead (U)pdate (D)elete операций с БД.
+
+5. Primary Key (Первичный ключ):
+
+   Уникальный идентификатор для каждой записи в таблице БД. Указывается при помощи аннотации @Id.
+
+6. JPQL (Java Persistence Query Language):
+
+   Язык запросов, аналогичный SQL, но используется для взаимодействия с обьектами JPA (Entity). Позволяет
+   выполнять запросы непосредственно к классам сущностей.
+
+7. Связи между сущностями:
+
+   Взаимосвязи (отношения) обьектов, такие как один-к-одному, один-ко-многим, и много-ко-многим. Указываются
+   при помощи аннотаций @OneToOne, @OneToMany, @ManyToOne, @ManyToMany.
+
+Эти концепции являются основными для понимания и использования Java Persistence API для работы с БД в
+Java приложениях.
+
+=================================
+Распространенные реализации JPA:
+=================================
+
+1. Hibernate Framework:
+
+   Hibernate - является одной из самых распространенных и наиболее известных реализаций JPA. Он предоста-
+   вляет мощный механизм ORM и другие функции для взаимодействия с базами данных в Java-приложениях.
+
+2. EclipseLink:
+
+   EclipseLink - это другая популярная реализация JPA, которая создана как проект Eclipse. Она так-же
+   предоставляет множество возможностей для взаимодействия с БД при помощи Java.
+
+3. DataNucles:
+
+   DataNucles - реализация JPA, которая поддерживает разнообразные языки программирования, но ее основной
+   фокус это обьектно-реляционное отображение для Java.
+
+4. Apache OpenJPA:
+
+   Apache OpenJPA - это еще одна известная реализация JPA, которая предоставляет расширенные возможности
+   для взаимодействия с базами данных в Java программах.
+
+Данные реализации позволяют разработчикам легко использовать JPA для работы с базами данных, используя
+стандартные либо специфичные для реализаций особенности.
 
 *
 ======================================================================================================
 2) JPA та Hibernate
 
-*
-======================================================================================================
-3) Робота з БД за допомогою Hibernate
+JPA (Java Persistence API) и Hibernate являются технологиями, связанными с персистентностью данных в
+Java-приложениях. Рассмотрим их основные концепции и взаимодействие.
+
 
 *
 ======================================================================================================
-4) Додаткові матеріали
+3) Работа с БД при помощи Hibernate
+
+Hibernate под капотом использует JDBC, при этом благодаря Hibernate значительно упрощается настройка
+взаимодействия с БД, и не нужно писать такие громоздкие парсеры.
+
+=============================================
+Сам Hibernate манипулирует Entity-сущностями,
+=============================================
+
+жизненный цикл которых состоит из следующих этапов:
+
+ 1. Transient State (переходное) состояние.
+
+    * Обьект находится в Transient состоянии в случаях:
+        -   пока он еще не связан с сессией Hibernate - тобишь, обьектами Session или EntityManager.
+        -   либо сразу после создания, но пока еще не было его сохранения в БД.
+
+ 2. Persistent State (постоянное) состояние.
+
+    * Обьект переходит в Persistent состояние в случаях:
+        -   когда его сохраняют в БД при помощи операций сохранения (save) або подобных иных.
+
+ Hibernate следит за изменениями в Entity-сущностях(обьектах) и изменения автоматически синхронизируются
+ с БД при выполнении commit'а.
+
+ 3. Detached State (отсоединенное) стостояние.
+
+    *   Обьект переходит в Detached состояние в случаях:
+        -   когда сессия Hibernate к которой он принадлежит, закрывается, либо обьект удаляется из сессии.
+
+Удаленные обьекты могут быть снова добавлены в другую сессию и их состояние может быть синхронизирован
+с соответствующими записями в БД.
+
+ 4. Removed State (удаленное) состояние.
+
+    * Обьект переходит в Removed состояние в случаях:
+        -   когда вызывается операция удаления (delete).
+
+Обьект остается в удаленном состоянии до меомента вызова commit'а транзакции, после чего он физически
+удаляется из БД.
+
+Управления состояниями сущностей является важной частью использования Hibernate и позволяет эффективно
+взаимодействовать с базой данных, сохраняя консистентность информации и обеспечивая оптимальную проду-
+ктивность.
+
+===============================================
+Теперь следует поговорить о PersistenceContext:
+================================================
+
+PersistenceContext - это один из ключевых компонентов Hibernate, который отвечает за кэширование Entity-
+сущностей/обьектов и отслеживание их состояния во время взаимодействия с БД. В Hibernate управление состоянием
+обьектов реализовывается через механизм "прямого манипулирования" (direct manipulation).
+
+Основные концепции, связанные с PersistenceContext:
+
+1. Кеширование обьектов: Hibernate использует PersistenceContext для сохранения в кеш-памяти тех Entity-
+   сущностей/обьектов, которые подверглись чтению/записи из/в БД. Это позволяет предотвратить частые
+   запросы в БД и улучшить перфоманс.
+
+2. Отслеживание состояния обьектов: PersistenceContext следит за изменениями состояния Entity-сущностей/
+   обьектов. Когда Вы получаете обьект из БД, Hibernate регистрирует его в PersistenceContext. Изменения,
+   внесенные в этот обьект, так-же отслеживаются. При вызове метода commit либо в рамках транзакции,
+   Hibernate анализирует PersistenceContext и автоматически вносит необходимые изменения в БД.
+
+3. Паттерн Identity Map: PersistenceContext использует Identity Map паттерн. Это означает что для каждого
+   уникального идентификатора в БД есть только одна Entity-сущность/обьект в PersistenceContext. Это
+   обеспечивает консистентность данных и избежание проблем с тем, что несколько обьектов представляют
+   одну и ту же запись в БД.
+
+4. Каскадные операции: PersistenceContext следит за связями между обьектами и использует их для реализации
+   каскадных операций. Например, если Вы сохраните обьект, который имеет ассоциации с другими обьектами,
+   Hibernate может автоматически сохранить или обновить эти ассоциированные обьекты.
+
+5. Отделение изменений: Hibernate умеет отличать изменения в PersistenceContext от непосредственной работы
+   с БД. Это позволяет работать с Entity-сушностями/обьектами как обычно, и вносить изменения, a Hibernate
+   автоматически синхронизирует эти изменения с БД.
+
+Вцелом, PersistenceContext играет важную роль в работе Hibernate, позволяя обеспечивать консистентность
+данных и облегчая взаимодействие с БД через обьектно-реляционное отображение.
+
+============================================================
+Разберемся, наконец, с EntityManagerFactory и SessionFactory:
+============================================================
+
+Обьекты EntityManagerFactory и SessionFactory являются ключевыми компонентами в контексте работы с
+Hibernate. Основная их цель состоит в управлении жизненным циклом обьектов и взаимодействии с БД.
+
+Поговорим о каждом из них:
+
+1. EntityManagerFactory:
+
+    - Создание EntityManager: EntityManagerFactory отвечает за сознание и настройку EntityManager,
+      который используется для выполнения операций с БД. Каждый EntityManager связан с конкретным
+      PersistenceContext и отвечает за взаимодействие с сущностями и БД.
+
+    - Управление транзакциями: EntityManagerFactory помогает в управлении транзакциями. Она может
+      создавать новые транзакции и взаимодействовать с ними.
+
+    - Оптимизация ресурсов: Использование EntityManagerFactory может облегчить процесс оптимизации
+      ресурсов путем создания одного экземпляра фабрики, который может использоваться для создания
+      нескольких EntityManager в рамках приложения.
+
+2. SessionFactory:
+
+    - Создание Session: SessionFactory отвечает за создание Session, которая является интерфейсом
+      между приложением и БД. Она (Session) используется для выполнения операций с БД, таких как
+      сохранение, обновление и удаление обьектов.
+
+    - Управление транзакциями: Как и в случае с EntityManagerFactory, SessionFactory предоставляет
+      возможность управления транзакциями, обеспечивая изолированные операции и управление коммитами
+      и откатами транзакций.
+
+    - Кеширование и оптимизация запросов: SessionFactory может управлять кешированием для оптимизации
+      запросов и уменьшения количества запросов к БД.
+
+Вцелом, оба эти обьекта служат для упрощения взаимодействия между приложением и БД, помогая управлять
+ресурсами, транзакциями и оптимизацией запросов в контексте работы с Hibernate.
+
+============================
+Как устроен кеш в Hibernate?
+============================
+
+В Hibernate есть два уровня кеш-памяти, Session-level cache и SessionFactory-level cache:
+
+Кеш 1 уровня (Session-level cache):
+
+    - это кэш, который находится непосредственно на уровне сессии (Session). Он сохраняет обьекты, которые
+      были вытянуты с БД во время текущей сессии. Тоесть, если вы вытянули оьект с БД во время текущей
+      сессии и потом вновь пытаетесь вытащить тот же самый обьект, Hibernate может вернуть его из кеша 1
+      уровня вместо того, что-бы делать запрос в БД.
+
+      Методы session.get() и session.load() существуют в Hibernate для использования кеша 1 уровня, они
+      автоматически осуществляют поиск в кеше 1 уровня перед обращением к БД.
+
+Это может помочь улучшить продуктивность, поскольку уменьшается количество запросов к БД во время работы с
+одной сессией в Hibernate.
+
+Однако, важно помнить, что кеш 1 уровня существует только во время жизненного цикла самой сессии. Если
+сессия закрывается, кеш 1 уровня теряет связанные с ней данные. Кроме того, использование кеша 1 уровня
+может быть не практичным для обьектов, которые часто изменяются, поскольку это может привести к неактуальной
+информации.
+
+Кеш 2 уровня (SessionFactory-level cache):
+
+    - этот кеш связан c SessionFactory и является общим для всех сессий, которые принадлежат к одной
+      SessionFactory.
+
+      Кеш 2 уровня служит для сохранения копий данных, которые вытягиваются из БД в область, доступную
+      для всех сессий, которые используют одну SessionFactory. Это может существенно уменьшить количество
+      запросов в БД, поскольку одни и те же данные могут быть переиспользованы разными сессиями без повто-
+      рного чтения из БД.
+
+      Кеш 2 уровня поддерживает обьекты, коллекции, и данные для критериальных запросов. Его можно
+      настраивать для использования разнообразных сторонних источников кеширования, таких как Ehcache,
+      Hazelcast, JBoss Cache, Caffeine, Redisson, Memcached, итп.
+
+      Для того, что-бы включить кеш 2 уровня, нужно указать в конфигурационном файле Hibernate
+      следующие параметры:
+
+<property name="hibernate.cache.use_second_level_cache">true</property>
+<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+
+В данном примере в качестве поставщика кеширования используется Ehcache. После этого, все сессии, которые
+используют эту SessionFactory, будут пользоваться общим кешем второго уровня.
+
+===========================================
+Что использовать? Session VS EntityManager:
+===========================================
+
+Рассмотрим основные различия между Hibernate Session и JPA EntityManager более пристально:
+
+1. Универсальность и происхождение:
+
+    - Hibernate интерфейс Session принадлежит конкретной реализации JPA - фреймворку Hibernate. Это означает,
+      что использование этого интерфейса привязывает ваш код к конкретному ORM фреймворку.
+
+    - JPA интерфейс EntityManager, в свою очередь является частью Java Persistence API (JPA) и служит
+      стандартизованным интерфейсом для работы с персистентными обьектами. Вы можете использовать
+      EntityManager вне зависимости от конкретного поставщика (реализации) JPA.
+
+2. Транзакционный контекст:
+
+    - Hibernate интерфейс Session управляет транзакционным контекстом и предоставляет методы для работы
+      с транзакциями.
+
+    - JPA интерфейс EntityManager так же предоставляет методы для управления транзакциями. Используется
+      через интерфейс EntityTransaction.
+
+3. Языки запросов (Query Languages):
+
+    - Hibernate интерфейс Session поддерживает собственный язык запросов - Hibernate Query Language (HQL),
+      а так-же возможность использовать нативные SQL-запросы.
+
+    - JPA интерфейс EntityManager использует Java Persistence Query Language (JPQL), который является
+      стандартизированным языком запросов для JPA. Так же, поддерживаются нативные SQL-запросы.
+
+4. Жизненный цикл сущностей:
+
+    - Hibernate интерфейс Session управляет жизненным циклом сущностей в границах PersistenceContext.
+
+    - JPA интерфейс EntityManager аналогичным образом управляет жизненным циклом сущностей, но в
+      контексте persistence context JPA.
+
+5. Портативность:
+
+    - Hibernate интерфейс Session реализованный код менее портативен, поскольку он зависит от конкретной
+      реализации Hibernate.
+
+    - JPA интерфейс EntityManager реализованный код более портативен, поскольку JPA - это стандарт, и вы
+      можете с легкостью изменить поставщика JPA, не изменяя кода вашего приложения, что вцелом очень
+      круто.
+
+Представ перед выбором между Hibernate Session и JPA EntityManager, следует учитывать требования проекта
+и необходимый уровень портативности. Если вам важна стандартизация и возможность легкой замены поставщика
+ORM, то использование JPA EntityManager может быть большим преимуществом. В остальных случаях, если вам
+важна функциональность, которую предоставляет Hibernate Framework, то может быть целесообразно использовать
+Session.
+
+============================
+Приклади роботи із Hibernate
+============================
+
+Перш за все, потрібно додати залежності Hibernate у свій проект.
+
+Якщо використовується maven в якості інструменту збирання проекту, то залежності виглядають наступним чином:
+
+<dependencies>
+		<dependency>
+		    <groupId>org.hibernate.orm</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>6.4.0.Final</version> <!-- Остання версія на момент написання -->
+		</dependency>
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>42.7.0</version> <!-- Актуальна версія драйвера БД -->
+		</dependency>
+</dependencies>
+
+Якщо gradle, то залежності виглядатимуть так:
+
+implementation group: 'org.hibernate.orm', name: 'hibernate-core', version: '6.4.0.Final'
+implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.0'
+
+Наступним кроком потрібно сконфігурувати Hibernate для подальшої роботи із базою даних.
+
+Скористаємося варіантом конфігурації через JPA:
+
+<!-- persistence.xml -->
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="hillel-persistence-unit" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+				<class>ua.hillel.entity.Account</class>
+
+        <!-- Specify the database connection properties -->
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="postgres"/>
+
+            <!-- Specify Hibernate-specific properties -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>
+
+Конфігураційний файл persistence.xml потрібно помістити в директорію **resources/META-INF** проекту,
+тоді Hibernate при запуску додатку зможе скористатись цим файлом для налаштування роботи із ним.
+
+Таблиці для сутностей Hibernate вміє створювати самостійно, йому тільки треба сказати, як це зробити.
+
+В конфігураційному файлі при першому старті програми потрібно змінити властивість, яка відповідає
+за авто-генерацію таблиць і виставити значення в create:
+
+<property name="hibernate.hbm2ddl.auto" value="create"/>
+
+При подальших запусках поміняти назад на update.
+
+Прийшов час писати код!
+
+Потрібно створити сутність, з якою ми будемо працювати і додати відповідні мапінги за допомогою анотацій,
+тож нехай це буде клас Account.
+
+@Entity
+@Table(name = "account")
+public class Account {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "birthday", nullable = false)
+    private LocalDate birthday;
+
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Column(name = "creation_time", nullable = false)
+    private LocalDateTime creationTime;
+
+    @Column(name = "balance")
+    private BigDecimal balance = BigDecimal.ZERO.setScale(2);
+
+    public Account() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        return Objects.equals(id, account.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", birthday=" + birthday +
+                ", gender=" + gender +
+                ", creationTime=" + creationTime +
+                ", balance=" + balance +
+                '}';
+    }
+}
+
+Готово, тепер створимо класс, в якому використаємо Hibernate для виконання запиту до бази даних.
+
+public class AccountDaoImpl implements AccountDao {
+
+    private EntityManagerFactory emf;
+
+    public AccountDaoImpl(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
+
+    @Override
+    public void save(final Account account) {
+        Objects.requireNonNull(account, "Parameter [account] must not be null!");
+        EntityManager entityManager = this.emf.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.persist(account);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+            throw new AccountDaoException("Cannot save account %s".formatted(account), ex);
+        }
+    }
+
+		@Override
+    public Account findByEmail(String email) {
+        return emf.createEntityManager()
+                .createQuery("FROM Account a WHERE a.email = :email", Account.class)
+                .setParameter("email", Objects.requireNonNull(email))
+                .getSingleResult();
+    }
+}
+
+Пояснення до реалізації методу save():
+
+Спершу потрібно виконати валідацію, що сутність, яка прийшла на вхід, не є null - використаємо
+вбудований класс Objects з JDK і його метод requireNonNull.
+
+Далі для роботи нам потрібно створити об’єкт EntityManager - використовуємо для цього фабрику
+сесій (EntityManagerFactory).
+
+За допомогою EntityManager створюємо об’єкт транзакції Transaction
+Відкриваємо транзакцію - метод begin().
+
+За допомогою метода persist() зберігаємо аккаунт (важливо - на цьому етапі об’єкт акаунта ще не був
+збережений до бази даних, він лише зберігся на рівні PersistenceContext’y).
+
+Виконуємо commit() - це операція, яка безпосереднью впливає на те, щоб дані були збережені в базу.
+Тільки після комміту дані з’являться в базі.
+
+Код, що зберігає акаунт в базу, був спеціально взятий в блок **try-catch**, оскільки якщо станеться
+якась помилка і буде викинуто ексепшн, то нам потрібно буде повернути дані в попередній стан - в той,
+в якому вони були до того, як почалася операція збереження нового акаунту.
+
+У випадку, коли було викинуто вийняток, необхідно привести дані до початкового стану - використовуємо
+rollback() і потім викидаємо вийняток із повідомленням, яке чітко відображає, що пішло не так.
+
+Пояснення до реалізації методу findByEmail():
+
+Створюємо EntityManager для роботи
+
+Викликаємо метод createQuery(), в який передаємо запит та тип класу
+setParameter() дозволяє нам передати значення параметра email, що прийшло на вхід, до нашого запиту - email
+Objects.requireNonNull(email) - робимо валідацію, що email не null
+Метод getSingleResult() вказує Hibernate знайти результат в базі даних та повернути його
+It’s testing time!
+
+public class Main {
+    public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SingleAccountEntityPostgres");
+        EntityManager em = emf.createEntityManager();
+        Account account = new Account();
+        account.setFirstName("John");
+        account.setLastName("Snow");
+        account.setEmail("j.snow@gmail.com");
+        account.setBirthday(LocalDate.of(1970, Month.APRIL, 1));
+        account.setGender(Gender.MALE);
+        account.setBalance(BigDecimal.valueOf(10000).setScale(2));
+        account.setCreationTime(LocalDateTime.now());
+
+        AccountDao dao = new AccountDaoImpl(emf);
+
+        // save an account
+        dao.save(account);
+
+        // get created account from db
+        Account newAccount = dao.findByEmail(account.getEmail());
+        System.out.println(newAccount);
+    }
+}
+
+Давайте подивимось на результат роботи програми:
+
+Account(id=1, firstName=John, lastName=Snow, email=j.snow@gmail.com, birthday=1970-04-01
+
+*
+======================================================================================================
+4) ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ И ССЫЛКИ
+
+Thorben Janssen’s blog:
+https://thorben-janssen.com/hibernate-getting-started/
+
+Well-structured tutorials on JPA and Hibernate:
+https://www.baeldung.com/learn-jpa-hibernate
+
+Vlad Mihalcea’s blog:
+https://vladmihalcea.com/tutorials/hibernate/
+
+Hibernate documentation:
+https://hibernate.org/orm/documentation/6.4/
+
+JPA specification:
+https://jakarta.ee/specifications/persistence/2.2/apidocs/
 
 *
 ======================================================================================================
