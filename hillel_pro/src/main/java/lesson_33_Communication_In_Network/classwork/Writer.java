@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 
 public class Writer {
     public static void main(String[] args) {
-        Account account = new Account(1, "first", "second");
+        Account account = new Account(1, "first", "second", "common");
 
         try (FileOutputStream fileOutputStream = new FileOutputStream("account.txt")) {
             try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
