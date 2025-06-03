@@ -1,10 +1,12 @@
 package lesson_37_Web_Servers_Java_Servlets.homework.model;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +15,24 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
 public class Order {
     private int id;
-    private final LocalDateTime date = LocalDateTime.now();
+    private LocalDateTime date = LocalDateTime.now();
     private double orderCost;
-    private final List<Product> products;
+    private List<Product> products;
+
+    public Order() {
+    };
 
     public Order(int id) {
         this.id = id;
         this.products = new ArrayList<>();
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+        orderCost += product.getProductCost();
     }
 
 }
