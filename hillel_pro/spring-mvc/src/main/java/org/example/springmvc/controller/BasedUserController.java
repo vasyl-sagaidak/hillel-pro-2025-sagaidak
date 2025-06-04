@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Map;
 
 @Controller
-//@RequestMapping("/users")
+@RequestMapping("/based/users")
 @AllArgsConstructor
 public class BasedUserController {
 
