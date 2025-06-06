@@ -3,6 +3,7 @@ package org.example.springboot.service;
 import lombok.AllArgsConstructor;
 import org.example.springboot.component.MyComponent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -19,5 +20,8 @@ public class OtherService {
 
     public void printAllStudents() {
         System.out.println(studentService.getStudents());
+        for (MyComponent myComponent : myComponentList) {
+            System.out.println(myComponent);
+        }
     }
 }
