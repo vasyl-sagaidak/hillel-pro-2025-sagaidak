@@ -2,17 +2,19 @@ package org.example.lesson41homework.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Getter
+@Setter
 public class Order {
     private int id;
     private double totalCost;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDate createdAt = LocalDate.now();
     private List<Product> products = new ArrayList<>();
 
     public void addProduct(Product product) {
@@ -20,3 +22,5 @@ public class Order {
         totalCost += product.getPrice();
     }
 }
+
+//Order
