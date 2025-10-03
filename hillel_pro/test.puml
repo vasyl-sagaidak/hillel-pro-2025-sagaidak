@@ -1,0 +1,37 @@
+@startuml
+class lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.InFileStorage {
++ void store(String)
+}
+
+enum lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.StorageTypes {
++  IN_MEMORY
++  FILE
++  DB
+}
+
+class lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.Factory {
++ DataStorage createStorage(StorageTypes)
+}
+
+interface lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.DataStorage {
+~ void store(String)
+}
+
+class lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.InMemoryStorage {
++ void store(String)
+}
+
+class lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.DBStorage {
++ void store(String)
+}
+
+class lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.FactoryMethod_Main {
++ {static} void main(String[])
+}
+
+
+
+lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.DataStorage <|.. lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.InFileStorage
+lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.DataStorage <|.. lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.InMemoryStorage
+lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.DataStorage <|.. lesson_24_gof_patterns_01.livecoding_patterns.creational.factory_method.DBStorage
+@enduml
