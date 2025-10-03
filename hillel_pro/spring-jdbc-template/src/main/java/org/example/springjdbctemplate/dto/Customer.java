@@ -1,4 +1,4 @@
-package org.example.springjdbc.dto;
+package org.example.springjdbctemplate.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

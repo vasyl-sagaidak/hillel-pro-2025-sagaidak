@@ -1,6 +1,6 @@
-package org.example.springjdbc.mapper;
+package org.example.springjdbctemplate.mapper;
 
-import org.example.springjdbc.dto.User;
+import org.example.springjdbctemplate.dto.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

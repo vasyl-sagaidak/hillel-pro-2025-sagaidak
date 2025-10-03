@@ -1,8 +1,8 @@
-package org.example.springjdbc.dao;
+package org.example.springjdbctemplate.dao;
 
 import lombok.AllArgsConstructor;
-import org.example.springjdbc.dto.User;
-import org.example.springjdbc.mapper.UserMapper;
+import org.example.springjdbctemplate.dto.User;
+import org.example.springjdbctemplate.mapper.UserMapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
